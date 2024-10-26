@@ -5,81 +5,78 @@ const create = async(req,res) => {
     try {
         await user.save()
         return res.sendStatus(200).json({
-            message:"Added Successfully"
+            message: "Added successfully"
         })
-    }
-    catch(err)
-    {
+    } catch (err) {
         return res.sendStatus(400).json({
-            error:"Error Message"
+            error: "I broke in controller/user/create"
         })
+        // return res.json(400, {
+        //     message:"Added Unsuccessfully"
+        //  });
     }
 }
-//update
-const list = async(req,res)=>{
-    try{
+
+const list = async(req,res) => {
+    try {
         let users = await User.find().select('name email updated created');
         res.json(users);
-    }
-    catch(err){
+    } catch (err) {
         return res.sendStatus(400).json({
-            error:"Error Message"
-        })
+            error:"I broke in controller/user/list"
+         })
     }
 }
 
-const userById = async(req,res,next,id)=>{
-    try{
+const userById = async(req,res,next,id) => {
+    try {
         let user = await User.findById(id);
-        if(!user)
-            return res.sendStatus('400').json({
-        error:"User doesn't exist"
+        if (!user) res.sendStatus('400').json({
+            error: "User doesn't exist"
         })
-    req.profile = user
-    next()
-    }
-    catch(err){
+        req.profile = user
+        next()
+    } catch (err) {
         return res.sendStatus(400).json({
-            error:"Error Message"
+            error: "I broke in controller/user/userbyid"
         })
     }
 }
 
-const read = (req,res) =>{
+const read = (req,res) => {
     req.profile.hashed_password = undefined
     req.profile.salt = undefined
     return res.json(req.profile)
 }
+
 const update = async(req,res) => {
-    try{
+    try {
         let user = req.profile
         user = extend(user,req.body)
         user.updated = Date.now()
         await user.save()
         user.hashed_password = undefined
-        user.salt  = undefined
+        user.salt = undefined
         res.json(user)
-    }
-    catch(err)
-    {
-    return res.sendStatus(400).json({
-            rror:"Error Message"
-        })   
+    } catch (err) {
+        return res.sendStatus(400).json({
+            error: "I broke in controller/user/update"
+        })
     }
 }
+
 const remove = async(req,res) => {
-    try{
+    try {
         let user = req.profile
         let deletedUser = await user.deleteOne()
         deletedUser.hashed_password = undefined
         deletedUser.salt = undefined
         res.json(deletedUser)
-    }
-    catch(err)
-    {
-    return res.sendStatus(400).json({
-            rror:"Error Message"
-        })   
+
+    } catch (err) {
+        return res.sendStatus(400).json({
+            error: "I broke in controller/user/remove"
+        })
     }
 }
-module.exports = {create, userById,read,list,remove,update}
+module.exports = {create, list, userById, read, update, remove}

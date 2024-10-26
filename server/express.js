@@ -1,6 +1,6 @@
 // require module
 const express = require('express')
-const path = require('path');
+const path = require('path')
 const cookieParser = require('cookie-parser');
 const compress = require('compression');
 const cors = require('cors');

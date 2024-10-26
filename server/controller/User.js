@@ -2,15 +2,15 @@ const User = require('../models/User.js');
 
 const create = async(req,res) => {
     const user = new User(req.body)
-    try {
+    try{
         await user.save()
-        return res.sendStatus(200).json({
+        return res.json({
             message:"Added Successfully"
         })
     }
     catch(err)
     {
-        return res.sendStatus(400).json({
+        return res.json({
             error:"Error Message"
         })
     }
@@ -22,7 +22,7 @@ const list = async(req,res)=>{
         res.json(users);
     }
     catch(err){
-        return res.sendStatus(400).json({
+        return res.json({
             error:"Error Message"
         })
     }
@@ -32,14 +32,14 @@ const userById = async(req,res,next,id)=>{
     try{
         let user = await User.findById(id);
         if(!user)
-            return res.sendStatus('400').json({
+            return res.json({
         error:"User doesn't exist"
         })
     req.profile = user
     next()
     }
     catch(err){
-        return res.sendStatus(400).json({
+        return res.json({
             error:"Error Message"
         })
     }
@@ -62,8 +62,8 @@ const update = async(req,res) => {
     }
     catch(err)
     {
-    return res.sendStatus(400).json({
-            rror:"Error Message"
+    return res.json({
+            error:"Error Message"
         })   
     }
 }
@@ -77,8 +77,8 @@ const remove = async(req,res) => {
     }
     catch(err)
     {
-    return res.sendStatus(400).json({
-            rror:"Error Message"
+    return res.json({
+            error:"Error Message"
         })   
     }
 }
